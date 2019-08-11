@@ -101,7 +101,7 @@ Loss, wer and test output samples:
 ![output sample](images/sample-output.png "output sample")
 
 Hardware:
-- I trained this on TPU: v2-8 and used both computing and TPU instance preemptable. Make sure to put script to shutdown TPU as soon as compute instance is preempted or does down:
+- I trained this on TPU: v2-8 and used both computing and TPU instance preemptable. Make sure to put script to shutdown TPU as soon as compute instance is preempted or does down:\
 `#!/bin/bash
 MY_USER="your_instance_login_account"
 echo "Shutting down!  Shutting all TPU nodes."

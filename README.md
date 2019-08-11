@@ -101,3 +101,7 @@ Loss, wer and test output samples:
 - try to speed up RNN
 - add more training data such as train-other-500 set
 - review beam search, there should be proper language model used to transform speech recognition character outputs into the best possible english sentense 
+
+## References
+Deep Speech: Scaling up end-to-end speech recognition
+https://arxiv.org/pdf/1412.5567v2

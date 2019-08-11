@@ -103,10 +103,10 @@ Loss, wer and test output samples:
 Hardware:
 - I trained this on TPU: v2-8 and used both computing and TPU instance preemptable. Make sure to put script to shutdown TPU as soon as compute instance is preempted or does down:\
 `#!/bin/bash`\
-`MY_USER="your_instance_login_account"`\
+`MY_USER="your_linux_instance_login_account"`\
 `echo "Shutting down!  Shutting all TPU nodes."`\
 `su "${MY_USER}" -c "gcloud compute tpus stop node-8 --zone=us-central1-c --async"`\
-`echo "Done uploading, shutting down."`\
+`echo "Done uploading, shutting down."`
 - If using TPU, compute instance can be just 2 vCPU and 7.5gbit memory
 - I did not try GPU
 

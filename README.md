@@ -89,10 +89,11 @@ Debug:
 
 Loss, wer and test output samples:
 
-ctc loss - I removed some part of the image. It was due to wrong training parameters
+- ctc loss - I removed some part of the image. It was due to wrong training parameters
 ![training loss](images/ctc-loss22.png "training loss")
-
-wer - this is how far I went. Should be better...
+- wer - this is how far I went. I the article they used more data for training. train-other-500 can be added into traning set 
 ![error rate](images/wer2.png "error rate")
+- output sample:
+![output sample](images/sample-output.png "output sample")
 
 

@@ -38,8 +38,12 @@ Length distribution in traning-clean-360 dataset:\
 After train and test data is prepared, optionally copy files to Google's storage:\
 `gsutil -m cp data/\*.tfrecords.\* gs://robotic-gasket-999999.appspot.com/data`
 - 999999 - this with be specific to your storage
+
+Hardware:
+- Compute instance can be just 2 vCPU and 7.5GB memory. Since prepare_libri.py is restartable, just leave it running until done without fear to be preempted
+
 ## Training
-Program Flow:
+Program flow:
 
 1. Defining tfrecorddataset and iterator
 2. Defining model
@@ -95,6 +99,17 @@ Loss, wer and test output samples:
 ![error rate](images/wer2.png "error rate")
 - output sample:
 ![output sample](images/sample-output.png "output sample")
+
+Hardware:
+- I trained this on TPU: v2-8 and used both computing and TPU instance preemptable. Make sure to put script to shutdown TPU as soon as compute instance is preempted or does down:
+`#!/bin/bash
+MY_USER="your_instance_login_account"
+echo "Shutting down!  Shutting all TPU nodes."
+su "${MY_USER}" -c "gcloud compute tpus stop node-8 --zone=us-central1-c --async"
+echo "Done uploading, shutting down."
+`
+- If using TPU, compute instance can be just 2 vCPU and 7.5gbit memory
+- I did not try GPU
 
 ## Further work
 - make bfloat16 work and fix relu20

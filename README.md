@@ -1,17 +1,18 @@
 # Deep Speech - implementation of 1412.5567v2 19 Dec 2014 article
-
-This is simple and strightforward implementation in a very few program files:
-
-- prepare_libri.py preprocesses Libri datasets and outputs in tfrecords format in local file system. Generally, idea was that Google's TPU is used for training. TPU can access data located in Google storage, so tfrecord output files have to be manually copied into Google storage
+This is a simple and strightforward implementation in a very few program files:
+- prepare_libri.py preprocesses Libri datasets and outputs in tfrecords format in local file system. Generally, the idea was that Google's TPU will used for training. TPU can access data located in Google storage, so tfrecord output files have to be copied into Google storage
 - training.py is a training program implemented in tensorflow (1.14)
 - utils.py contains alphabet to index and index to alpabet mapping
-- constants.py defines locations of training, testing and logs. tfrecords and logs can be located locally or on Google storage. TPU requires tfrecords located in Google storage, so TPU can access them. This file is relevant to training only and it has to be adjusted. This avoid editing training.py
-
+- constants.py defines file locations for training, testing and logs. tfrecords and logs can be located locally or on Google storage. TPU requires tfrecords located in Google storage, so TPU can access them. This file is relevant to training.py only and it has to be adjusted. This avoids editing training.py
+## Required packages and data
+- librosa: reading flac files. librosa may require in turn some other packages, just follow what it asks. Install: pip install librosa
+- python_speech_features: filterbank energies. Install: pip install python_speech_features
+- jiwer to calculate wer. Install: pip install jiwer
+- Libri: http://www.openslr.org/12/
 ## Preparing data
-
 Files preparation:
-1. Unzip Libri. I used only Libri train-clean-100, train-clean-360 and test-clean
-2. prepare_libri can split tfrecords. 100k samples will be split into 4 files: 30k, 30k, 30k, 10k if partition size is 30k
+1. Unzip Libri. I used Libri train-clean-100, train-clean-360 and test-clean only
+2. prepare_libri.py can split tfrecord ouput files. For example, 100k of samples can be split into 4 files: 30k, 30k, 30k, 10k if partition size parameter is 30k. Output generation can restart with starting_position parameter. This is very helpful if Google preemtive instance is used
 
 Processing:
 1. librosa is used to read flac files directly without transforming to wav. Sample rate is 16,000, window 20ms, step 10ms, 80 bins

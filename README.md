@@ -83,6 +83,16 @@ python training.py --max_sequence_length=1729 --max_label_length=338 --training_
 - test_interval - longer itervals save time, progress can be judged by loss
 - learning rate formula: learning_rate / (learning_rate_decay_factor\*\*epoch), use factor 1 to keep lr the same
 
+Debug:
+- use logging=DEBUG to enable extensive output
+- I used debug to see features, projections, gradients. Also, anything else can be added such as to see convolutions weigths or outputs
 
+Loss, wer and test output samples:
+
+ctc loss - I removed some part of the image. It was due to wrong training parameters
+![training loss](images/ctc-loss22.png "training loss")
+
+wer - this is how far I went. Should be better...
+![error rate](images/wer2.png "error rate")
 
 

@@ -34,11 +34,9 @@ Parameter notes (see all parameters in prepare_libri.py):
 
 After train and test data is prepared, optionally copy files to Google's storage:
 
-gsutil -m cp data/*.tfrecords.* gs://robotic-gasket-999999.appspot.com/data
+gsutil -m cp data/\*.tfrecords.\* gs://robotic-gasket-999999.appspot.com/data
 - 999999 - this with be specific to your storage
-
 ## Training
-
 Program Flow:
 
 1. Defining tfrecorddataset and iterator

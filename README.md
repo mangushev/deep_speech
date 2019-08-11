@@ -23,8 +23,8 @@ I used preemp 0. and kept logarithm value >= 0 for some reason. I do not think i
 5. Tensor is transformed as frequency (bins), time (frames), channel (1)
 6. tfrecord attributes are feature, feature length, label, label length - they will be needed in training.py
 
-Sample command:
-` python prepare_libri.py --max_sequence_length=1729 --max_label_length=338 --partition_size=30000 --starting_position=0 --logging=INFO --files_path=data/Libri/LibriSpeech/train-clean-360 --tfrecords_file=data/train-clean-360.tfrecords `
+Sample command:\
+`python prepare_libri.py --max_sequence_length=1729 --max_label_length=338 --partition_size=30000 --starting_position=0 --logging=INFO --files_path=data/Libri/LibriSpeech/train-clean-360 --tfrecords_file=data/train-clean-360.tfrecords`
 
 Parameter notes (see all parameters in prepare_libri.py):
 - starting_position - this allows to restart processing if previous processing was interrupted
@@ -32,9 +32,8 @@ Parameter notes (see all parameters in prepare_libri.py):
 - max_sequence_length value is 1729. It is selected based on lengths of libri-train-clean-100. There are few samples beyond 1729 in this dataset. Also, max_sequence_length impacts size in convolutions and RNN length. Longes samples are discarded. Probably, this value can be better adjusted based on what libri-train-clean-360 lengths are. max_label_length is just max length of label from selected samples.
 - logging=DEBUG shows feature values
 
-After train and test data is prepared, optionally copy files to Google's storage:
-
-gsutil -m cp data/\*.tfrecords.\* gs://robotic-gasket-999999.appspot.com/data
+After train and test data is prepared, optionally copy files to Google's storage:\
+`gsutil -m cp data/\*.tfrecords.\* gs://robotic-gasket-999999.appspot.com/data`
 - 999999 - this with be specific to your storage
 ## Training
 Program Flow:
@@ -72,9 +71,8 @@ bfloat16 calculates faster in some cases.
 - bfloat16 in not fully fixed in tensorfliow 1.14. tf.maximum uses less_equal op and is has a bug with double registration which will be fixed in post 1.14. So I put just relu6 to make it work
 - I was not able to overcome nan loss if I use bfloat16. This need to be looked some into. Could be relu6 compare to relu20
 
-Command line sample (see all parameters in training.py):
-
-python training.py --max_sequence_length=1729 --max_label_length=338 --training_set_size=132492 --testing_set_size=2472 --trace_interval=2 --save_interval=2 --test_interval=5 --shuffle_buffer_size=150000 -tpu --tpu_name='node-8' --learning_rate=0.0003 --learning_rate_decay_factor=1. --bfloat16
+Command line sample (see all parameters in training.py):\
+`python training.py --max_sequence_length=1729 --max_label_length=338 --training_set_size=132492 --testing_set_size=2472 --trace_interval=2 --save_interval=2 --test_interval=5 --shuffle_buffer_size=150000 -tpu --tpu_name='node-8' --learning_rate=0.0003 --learning_rate_decay_factor=1. --bfloat16`
 
 - max_sequence_length, max_label_length should be same as in prepare_linri
 - training_set_size, testing_set_size should be accurate for epochs calculation

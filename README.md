@@ -98,6 +98,7 @@ Loss, wer and test output samples:
 
 ## Further work
 - make bfloat16 work and fix relu20
+- try to speed up RNN
 - add more training data such as train-other-500 set
 - review beam search , there should be proper language model used to transform speech recognition letter outputs into the best possible english sentense 
 

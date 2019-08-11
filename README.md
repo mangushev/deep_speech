@@ -91,9 +91,14 @@ Loss, wer and test output samples:
 
 - ctc loss - I removed some part of the image. It was due to wrong training parameters
 ![training loss](images/ctc-loss22.png "training loss")
-- wer - this is how far I went. I the article they used more data for training. train-other-500 can be added into traning set 
+- wer - this is how far I got. I the article they used more data for training. train-other-500 can be added into traning set 
 ![error rate](images/wer2.png "error rate")
 - output sample:
 ![output sample](images/sample-output.png "output sample")
+
+## Further work
+- make bfloat16 work and fix relu20
+- add more training data such as train-other-500 set
+- review beam search , there should be proper language model used to transform speech recognition letter outputs into the best possible english sentense 
 
 

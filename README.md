@@ -17,14 +17,14 @@ Files preparation:
 Processing:
 1. librosa is used to read flac files directly without transforming to wav. Sample rate is 16,000, window 20ms, step 10ms, 80 bins
 2. python_speech_features package is used to get filterbank energies
-I used preemp 0. and kept logarithm value >= 0 for whatever reason. I do not think it is necessary, so just preempt just set to regular 0.97 and logariphm is not constrained to positive values
+I used preemp 0. and kept logarithm value >= 0 for some reason. I do not think it is necessary, so preempt is set to regular 0.97 and logariphm is not constrained to positive values
 3. Values are normalized within sample per bin
 4. Sample is padded with zeros to max_sequence_length
-5. Tensor is transformed as frequency, time, channel (1)
+5. Tensor is transformed as frequency (bins), time (frames), channel (1)
 6. tfrecord attributes are feature, feature length, label, label length - they will be needed in training.py
 
-Sample command:<br>
-python prepare_libri.py --max_sequence_length=1729 --max_label_length=338 --partition_size=30000 --starting_position=0 --logging=INFO --files_path=data/Libri/LibriSpeech/train-clean-360 --tfrecords_file=data/train-clean-360.tfrecords
+Sample command:
+` python prepare_libri.py --max_sequence_length=1729 --max_label_length=338 --partition_size=30000 --starting_position=0 --logging=INFO --files_path=data/Libri/LibriSpeech/train-clean-360 --tfrecords_file=data/train-clean-360.tfrecords `
 
 Parameter notes (see all parameters in prepare_libri.py):
 - starting_position - this allows to restart processing if previous processing was interrupted

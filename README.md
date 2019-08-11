@@ -1,4 +1,4 @@
-# Deep Speech - implementation of 1412.5567v2 [cs.CL] 19 Dec 2014 article
+# Deep Speech - implementation of 1412.5567v2 19 Dec 2014 article
 
 This is simple and strightforward implementation in a very few program files:
 

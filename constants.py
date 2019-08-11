@@ -1,5 +1,5 @@
-#TPU will require google storage
-bucket = 'robotic-gasket-241111.appspot.com'
+#TPU will require google storage, create you own bucket
+bucket = 'robotic-gasket-999999.appspot.com'
 #if TPU is not used, train_data can be local folder
 train_data = [
     'gs://' + bucket + '/data/train-clean-360-f1729-l338.tfrecords.00000000',

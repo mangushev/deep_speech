@@ -9,7 +9,7 @@ This is simple and strightforward implementation in a very few program files:
 - utils.py contains alphabet to index and index to alpabet mapping
 - constants.py defines locations of training, testing and logs. tfrecords and logs can be located locally or on Google storage. TPU requires tfrecords located in Google storage, so TPU can access them. This file is relevant to training only and it has to be adjusted. This avoid editing training.py
 
-<b>Preparing data</b>
+##Preparing data
 
 Files preparation:
 1. Unzip Libri. I used only Libri train-clean-100, train-clean-360 and test-clean
@@ -38,7 +38,7 @@ After train and test data is prepared, optionally copy files to Google's storage
 gsutil -m cp data/*.tfrecords.* gs://robotic-gasket-999999.appspot.com/data
 - 999999 - this with be specific to your storage
 
-<h2>Training</h2>
+##Training
 
 Flow:
 

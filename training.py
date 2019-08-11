@@ -63,8 +63,7 @@ def lower_convolutions(inputs):
    
     with tf.name_scope('lower_convolutions') as scope:
 
-        #batch, frequency bins, frames, 1
-        #b, f, t, 1 - reshape so 1st dim is like batch
+        #batch, frequency bins, time (frames), 1
         with tf.name_scope('conv1') as scope:
             filter1 = tf.compat.v1.get_variable(initializer=tf.compat.v1.initializers.he_normal(), shape=[41, context_window, 1, 32], name='filter1')
             conv1 = tf.nn.conv2d(inputs,filter1,strides=[1, 2, FLAGS.stride_size, 1], padding="SAME", use_cudnn_on_gpu=True, data_format='NHWC', name='conv1')
@@ -242,9 +241,6 @@ def main(_):
         nrof_steps, linear_projections, projections = deep_speech_1(next_feature, training_mode)
 
     next_feature_length.set_shape((FLAGS.batch_size))
-
-    if (FLAGS.summary):
-        tf.compat.v1.summary.histogram("projections", projections)
 
     with tf.name_scope('ctc_sparse_labels') as scope:
 

@@ -1,5 +1,4 @@
 import tensorflow as tf
-import tensorflow.compat.v1.logging as logging
 import numpy as np
 import re
 import glob
@@ -7,6 +6,7 @@ import os
 import argparse
 import sys
 import operator
+import logging
 from python_speech_features import logfbank, fbank
 import librosa
 
@@ -21,6 +21,13 @@ audio_mask = '{}/**/*.flac'
 
 np.set_printoptions(edgeitems=6, linewidth=10000, precision=4, suppress=True)
 
+logger = logging.getLogger('tensorflow')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.propagate = False
+
 def get_features(path):
     sig, fs = librosa.load(path, sr=FLAGS.sample_rate, mono=True)
 
@@ -33,8 +40,8 @@ def get_features(path):
     output_floor = -100.
     log_mel = np.log(np.maximum(float(output_floor), feat))
     
-    logging.debug ("logfbank shape: {}".format(log_mel.shape))
-    logging.debug ("logfbank:{} {}".format("\n", log_mel))
+    logger.debug ("logfbank shape: {}".format(log_mel.shape))
+    logger.debug ("logfbank:{} {}".format("\n", log_mel))
 
     #those are get data over bins, not over frame data
     mu = np.mean(log_mel, axis=0, keepdims=True)
@@ -42,8 +49,8 @@ def get_features(path):
 
     norm_log_mel = (log_mel - mu) / np.maximum(stdev, 1e-12)
 
-    logging.debug ("shape norm: {}".format(norm_log_mel.shape))
-    logging.debug ("norm:{} {}".format("\n", norm_log_mel))
+    logger.debug ("shape norm: {}".format(norm_log_mel.shape))
+    logger.debug ("norm:{} {}".format("\n", norm_log_mel))
 
     feature_len = norm_log_mel.shape[0]
 
@@ -103,7 +110,7 @@ def create_records(audio_files, label_file, tfrecords_file, file_count, record_c
         if (file_count - 1 < FLAGS.starting_position):
             continue
 
-        if (((file_count - 1) - FLAGS.starting_position) % FLAGS.batch_size == 0):
+        if (((file_count - 1) - FLAGS.starting_position) % FLAGS.partition_size == 0):
             if (writer != None):
                 writer.flush()
                 writer.close()
@@ -113,12 +120,12 @@ def create_records(audio_files, label_file, tfrecords_file, file_count, record_c
 
         features, feature_len = get_features(repository[name])
 
-        logging.info ("{} {} {} {} {}".format(repository[name], feature_len, len(label), file_count, record_count))
+        logger.info ("{} {} {} {} {}".format(repository[name], feature_len, len(label), file_count, record_count))
         
         max_feature_len = max(max_feature_len, feature_len)
 
         if (feature_len > FLAGS.max_sequence_length):
-            logging.info ('{} skipped: {}'.format(repository[name], feature_len))
+            logger.info ('{} skipped: {}'.format(repository[name], feature_len))
             feature_long = feature_long + 1
             continue
 
@@ -129,7 +136,7 @@ def create_records(audio_files, label_file, tfrecords_file, file_count, record_c
             for i, ch in enumerate(label.lower()):
                 label_tensor[i] = char_to_ix[ch]
         except Exception as e:
-            logging.info ("label length: {} skipped (could be character issue)".format(len(label)))
+            logger.info ("label length: {} skipped (could be character issue)".format(len(label)))
             label_long = label_long + 1
             continue
 
@@ -141,14 +148,14 @@ def create_records(audio_files, label_file, tfrecords_file, file_count, record_c
 
 def get_writer(tfrecords_file, starting_position):
     new_file = "{}.{:08d}".format(tfrecords_file, starting_position)
-    logging.info ("New reoords file: {} starting position {}".format(new_file, starting_position))
+    logger.info ("New reoords file: {} starting position {}".format(new_file, starting_position))
     return (tf.io.TFRecordWriter(new_file))
 
 def main(_):
 
-    tf.compat.v1.logging.set_verbosity(FLAGS.logging)
+    logger.setLevel(FLAGS.logging)
 
-    logging.info ("Running with parameters: {}".format(FLAGS))
+    logger.info ("Running with parameters: {}".format(FLAGS))
 
     file_count = 0
     record_count = 0
@@ -190,8 +197,8 @@ if __name__ == '__main__':
             help='Max length of output strings in characters will shorter strings filled with zeros.')
     parser.add_argument('--starting_position', type=int, default=0,
             help='At what valid record to start processing.')
-    parser.add_argument('--batch_size', type=int, default=20000,
-            help='Size of the batch of records to split.')
+    parser.add_argument('--partition_size', type=int, default=20000,
+            help='Size of partition to split tfrecords.')
     parser.add_argument('--logging', default='INFO', choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
             help='Enable excessive variables screen outputs.')
     parser.add_argument('--files_path', type=str, default='data/Libri/LibriSpeech/dev-clean',

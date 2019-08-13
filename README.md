@@ -51,7 +51,6 @@ Program flow:
 4. Providing ctc beam search
 5. Looping over traning and testing data
 
-
 1. Model is fed from tfrecord files. It is simple and efficient mechanism without doing much custom development. tf.data.dataset provides inteleave, shuffle, prefetch, map options removing burden doing this manually. Also, it is more efficient compare to feed dictionary. All prepare_libri tfrecord files are fed during traning. Traning and testing dataset are switched as per testing_interval parameter
 2. Model is defined as per article:
 - 3 convolutional layers: stride 2 in time dimention of first layer, context size is 5 so filter will be 5\*2+1=11, input is batch, frequency (bins), time (frames), channel, clipped relu (issue with bfloat16 discussed later)

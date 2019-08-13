@@ -1,5 +1,5 @@
 # Deep Speech - implementation of 1412.5567v2 19 Dec 2014 article
-This is a simple and strightforward implementation in a very few program files. In general, code does not use depricated tensorflow elements:\ 
+This is a simple and strightforward implementation in a very few program files. In general, code does not use depricated tensorflow elements: 
 - prepare_libri.py preprocesses Libri datasets and outputs in tfrecords format in local file system. Generally, the idea was that Google's TPU will used for training. TPU can access data located in Google storage, so tfrecord output files have to be copied into Google storage
 - training.py is a training program implemented in tensorflow (1.14)
 - utils.py contains alphabet to index and index to alpabet mapping
@@ -50,6 +50,7 @@ Program flow:
 3. Defining ctc_loss, optimizer (Adam) and training op
 4. Providing ctc beam search
 5. Looping over traning and testing data
+
 
 1. Model is fed from tfrecord files. It is simple and efficient mechanism without doing much custom development. tf.data.dataset provides inteleave, shuffle, prefetch, map options removing burden doing this manually. Also, it is more efficient compare to feed dictionary. All prepare_libri tfrecord files are fed during traning. Traning and testing dataset are switched as per testing_interval parameter
 2. Model is defined as per article:

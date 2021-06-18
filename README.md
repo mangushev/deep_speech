@@ -1,4 +1,6 @@
 # Deep Speech - implementation of 1412.5567v2 19 Dec 2014 article
+Article link: https://arxiv.org/abs/1412.5567
+
 This is a simple and strightforward implementation in a very few program files. In general, code does not use depricated tensorflow elements: 
 - prepare_libri.py preprocesses Libri datasets and outputs in tfrecords format in local file system. Generally, the idea was that Google's TPU will used for training. TPU can access data located in Google storage, so tfrecord output files have to be copied into Google storage
 - training.py is a training program implemented in tensorflow (1.14)
